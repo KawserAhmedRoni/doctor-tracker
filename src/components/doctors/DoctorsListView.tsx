@@ -48,7 +48,6 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
   const [sortBy, setSortBy] = useState<SortOption>('patients-desc');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
-  const [viewMode, setViewMode] = useState<DataViewMode>('default');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const patientCountMap = useMemo(() => {
@@ -136,18 +135,6 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
-          <select
-            value={viewMode}
-            onChange={(e) => setViewMode(e.target.value as DataViewMode)}
-            aria-label="Preview table state"
-            className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 cursor-pointer"
-          >
-            <option value="default">State: Live Data</option>
-            <option value="loading">State: Loading Skeleton</option>
-            <option value="empty">State: Empty Table</option>
-            <option value="error">State: API Error</option>
-          </select>
-
           <Button
             variant="primary"
             onClick={onAddDoctor}
@@ -326,25 +313,13 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
 
       {/* Table / Data Container */}
       <div className="rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
-        {viewMode === 'loading' ? (
-          <TableSkeleton rows={6} columns={6} />
-        ) : viewMode === 'error' ? (
-          <ErrorState
-            title="Failed to load doctor directory"
-            description="Could not retrieve the physician roster from the healthcare administration service."
-            onRetry={() => setViewMode('default')}
-          />
-        ) : viewMode === 'empty' || doctors.length === 0 ? (
+        {doctors.length === 0 ? (
           <EmptyState
             icon={<Stethoscope className="h-6 w-6" />}
             title="No doctors registered yet"
             description="Add your first physician to begin assigning patients and tracking clinical capacity."
             actionLabel="Add New Doctor"
             onAction={onAddDoctor}
-            secondaryLabel={viewMode === 'empty' ? 'Restore Demo Data' : undefined}
-            onSecondaryAction={
-              viewMode === 'empty' ? () => setViewMode('default') : undefined
-            }
           />
         ) : filteredDoctors.length === 0 ? (
           <EmptyState

@@ -44,7 +44,7 @@ interface HeaderProps {
   onToggleDarkMode: () => void;
   user: AdminUser;
   onLogout: () => void;
-  onPreviewSystemScreen: (view: AppView) => void;
+  onPreviewSystemScreen?: (view: AppView) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -373,78 +373,19 @@ export const Header: React.FC<HeaderProps> = ({
                 </p>
               </div>
 
-              <div className="py-1 border-b border-slate-100 dark:border-slate-800">
-                <p className="px-3.5 py-1 text-[11px] font-medium text-slate-400 dark:text-slate-500">
-                  Auth & System Screens
-                </p>
+              <div className="py-1">
                 <button
                   type="button"
                   onClick={() => {
-                    onPreviewSystemScreen('login');
                     setProfileOpen(false);
+                    onLogout();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 cursor-pointer"
                 >
-                  <UserRound className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Login Screen</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onPreviewSystemScreen('forgot-password');
-                    setProfileOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
-                >
-                  <KeyRound className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Forgot Password</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onPreviewSystemScreen('reset-password');
-                    setProfileOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
-                >
-                  <KeyRound className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Reset Password</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onPreviewSystemScreen('unauthorized');
-                    setProfileOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
-                >
-                  <ShieldAlert className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Access Denied (403)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onPreviewSystemScreen('not-found');
-                    setProfileOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
-                >
-                  <ShieldAlert className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Not Found (404)</span>
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>Sign Out</span>
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setProfileOpen(false);
-                  onLogout();
-                }}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 cursor-pointer"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                <span>Sign Out</span>
-              </button>
             </div>
           )}
         </div>

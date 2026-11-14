@@ -50,7 +50,6 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
   const [sortBy, setSortBy] = useState<PatientSort>('newest');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
-  const [viewMode, setViewMode] = useState<DataViewMode>('default');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const doctorMap = useMemo(() => {
@@ -140,18 +139,6 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
-          <select
-            value={viewMode}
-            onChange={(e) => setViewMode(e.target.value as DataViewMode)}
-            aria-label="Preview patient table state"
-            className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 cursor-pointer"
-          >
-            <option value="default">State: Live Data</option>
-            <option value="loading">State: Loading Skeleton</option>
-            <option value="empty">State: Empty Table</option>
-            <option value="error">State: API Error</option>
-          </select>
-
           <Button
             variant="primary"
             onClick={onAddPatient}
@@ -354,25 +341,13 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
 
       {/* Data Table */}
       <div className="rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
-        {viewMode === 'loading' ? (
-          <TableSkeleton rows={6} columns={5} />
-        ) : viewMode === 'error' ? (
-          <ErrorState
-            title="Failed to load patient records"
-            description="We could not synchronize patient registrations with the administration database."
-            onRetry={() => setViewMode('default')}
-          />
-        ) : viewMode === 'empty' || patients.length === 0 ? (
+        {patients.length === 0 ? (
           <EmptyState
             icon={<Users className="h-6 w-6" />}
             title="No patients registered"
             description="Register your first patient and assign them to an attending physician."
             actionLabel="Add Patient"
             onAction={onAddPatient}
-            secondaryLabel={viewMode === 'empty' ? 'Restore Demo Data' : undefined}
-            onSecondaryAction={
-              viewMode === 'empty' ? () => setViewMode('default') : undefined
-            }
           />
         ) : filteredPatients.length === 0 ? (
           <EmptyState

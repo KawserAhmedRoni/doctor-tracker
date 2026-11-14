@@ -45,7 +45,6 @@ export const DoctorDetailsView: React.FC<DoctorDetailsViewProps> = ({
 }) => {
   const [search, setSearch] = useState('');
   const [conditionFilter, setConditionFilter] = useState('all');
-  const [listState, setListState] = useState<DataViewMode>('default');
 
   const assignedPatients = useMemo(
     () => patients.filter((p) => p.assignedDoctorId === doctor.id),
@@ -247,18 +246,6 @@ export const DoctorDetailsView: React.FC<DoctorDetailsViewProps> = ({
               ))}
             </select>
 
-            <select
-              value={listState}
-              onChange={(e) => setListState(e.target.value as DataViewMode)}
-              aria-label="Preview list state"
-              className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-            >
-              <option value="default">State: Live</option>
-              <option value="loading">State: Loading</option>
-              <option value="empty">State: Empty</option>
-              <option value="error">State: Error</option>
-            </select>
-
             <Button
               size="sm"
               variant="primary"
@@ -270,25 +257,13 @@ export const DoctorDetailsView: React.FC<DoctorDetailsViewProps> = ({
           </div>
         </div>
 
-        {listState === 'loading' ? (
-          <TableSkeleton rows={4} columns={5} />
-        ) : listState === 'error' ? (
-          <ErrorState
-            title="Unable to load assigned patients"
-            description="We could not retrieve the patient roster for this physician."
-            onRetry={() => setListState('default')}
-          />
-        ) : listState === 'empty' || assignedPatients.length === 0 ? (
+        {assignedPatients.length === 0 ? (
           <EmptyState
             icon={<Users className="h-6 w-6" />}
             title="No patients assigned yet"
             description={`${doctor.name} does not currently have any patients in their care roster.`}
             actionLabel="Assign First Patient"
             onAction={() => onAddPatientUnderDoctor(doctor.id)}
-            secondaryLabel={listState === 'empty' ? 'Show Live Roster' : undefined}
-            onSecondaryAction={
-              listState === 'empty' ? () => setListState('default') : undefined
-            }
           />
         ) : filteredAssigned.length === 0 ? (
           <EmptyState
