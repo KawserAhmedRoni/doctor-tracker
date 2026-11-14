@@ -4,6 +4,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Doctor Tracker - Healthcare Administration & Clinical Management',
   description: 'Enterprise healthcare portal for managing physicians, patient rosters, clinical assignments, and analytics.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

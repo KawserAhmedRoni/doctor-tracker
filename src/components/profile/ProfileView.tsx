@@ -124,28 +124,28 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header Banner */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <Avatar name={currentUser.name} src={currentUser.avatarUrl} size="lg" />
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <Avatar name={currentUser.name} src={currentUser.avatarUrl} size="md" />
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-base sm:text-xl font-bold text-slate-900 dark:text-slate-100 truncate">
                   {currentUser.name}
                 </h1>
-                <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
+                <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-700 dark:bg-teal-950/60 dark:text-teal-300 border border-teal-200 dark:border-teal-800 shrink-0">
                   <Shield className="h-3 w-3" />
                   {currentUser.role.toUpperCase()}
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                 {currentUser.email}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-full sm:w-auto flex items-center justify-start sm:justify-end">
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               Connected to MongoDB Atlas
             </span>
           </div>
@@ -155,7 +155,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Create New User Form */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
             <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
               <div className="h-9 w-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
                 <UserPlus className="h-5 w-5" />
@@ -256,7 +256,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
 
         {/* Right Column: Existing Users in Database */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
               <div className="flex items-center gap-2">
                 <Users className="h-4.5 w-4.5 text-teal-600 dark:text-teal-400" />
@@ -291,30 +291,30 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
                   return (
                     <div
                       key={u._id}
-                      className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                      className="py-3 flex items-center justify-between gap-2"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                         <Avatar name={u.name} size="sm" />
                         <div className="min-w-0">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 sm:gap-2">
                             <p className="text-xs sm:text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                               {u.name}
                             </p>
                             {isCurrent && (
-                              <span className="text-[10px] bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300 font-bold px-1.5 py-0.2 rounded">
+                              <span className="text-[9px] sm:text-[10px] bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300 font-bold px-1.5 py-0.2 rounded shrink-0">
                                 YOU
                               </span>
                             )}
                           </div>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">
                             {u.email}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 sm:self-center shrink-0">
+                      <div className="flex items-center gap-2 shrink-0">
                         <span
-                          className={`text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${
+                          className={`text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${
                             u.role === 'admin'
                               ? 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
                               : u.role === 'doctor'
