@@ -21,6 +21,7 @@ import { PatientFormModal } from '@/src/components/patients/PatientFormModal';
 import { PatientsListView } from '@/src/components/patients/PatientsListView';
 import { ConfirmDialog } from '@/src/components/ui/ConfirmDialog';
 import { ToastContainer } from '@/src/components/ui/Toast';
+import { BottomNav } from '@/src/components/ui/BottomNav';
 import { LoginPage } from '@/src/components/auth/LoginPage';
 import { ForgotPasswordPage } from '@/src/components/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from '@/src/components/auth/ResetPasswordPage';
@@ -410,7 +411,7 @@ export default function MainPage() {
           onPreviewSystemScreen={(view) => setCurrentView(view)}
         />
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 xl:px-10 w-full">
+        <main className="flex-1 px-3 py-4 sm:px-6 lg:px-8 xl:px-10 w-full pb-20 md:pb-6">
           {currentView === 'dashboard' && (
             <DashboardView
               doctors={doctors}
@@ -538,6 +539,12 @@ export default function MainPage() {
       />
 
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+
+      {/* App-like Native Mobile Bottom Navigation Bar */}
+      <BottomNav
+        currentView={currentView}
+        onNavigate={(view) => setCurrentView(view)}
+      />
     </div>
   );
 }
