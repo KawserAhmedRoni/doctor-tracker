@@ -330,7 +330,7 @@ export default function MainPage() {
   const breadcrumbs = useMemo(() => {
     if (currentView === 'dashboard') return [{ label: 'Dashboard' }];
     if (currentView === 'profile')
-      return [{ label: 'Dashboard', onClick: () => setCurrentView('dashboard') }, { label: 'Profile & Users' }];
+      return [{ label: 'Dashboard', onClick: () => setCurrentView('dashboard') }, { label: 'Profile' }];
     if (currentView === 'doctors')
       return [{ label: 'Dashboard', onClick: () => setCurrentView('dashboard') }, { label: 'Doctors' }];
     if (currentView === 'doctor-details')
