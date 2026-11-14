@@ -122,7 +122,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <div className="space-y-6 w-full">
       {/* Header Banner */}
       <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
@@ -152,9 +152,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 w-full">
         {/* Left Column: Create New User Form */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 xl:col-span-4 space-y-6">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
             <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
               <div className="h-9 w-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
@@ -255,7 +255,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ currentUser, onShowToa
         </div>
 
         {/* Right Column: Existing Users in Database */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 xl:col-span-8 space-y-6">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
               <div className="flex items-center gap-2">
