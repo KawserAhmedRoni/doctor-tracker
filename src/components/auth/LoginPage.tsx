@@ -28,7 +28,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -139,7 +139,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-600 dark:bg-slate-800"
+              style={{ accentColor: '#0d9488' }}
+              className="h-4 w-4 rounded border-slate-300 accent-teal-600 focus:ring-teal-500 dark:border-slate-600 dark:bg-slate-800 cursor-pointer"
             />
             <span>Remember me</span>
           </label>
