@@ -410,7 +410,7 @@ export default function MainPage() {
           onPreviewSystemScreen={(view) => setCurrentView(view)}
         />
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 max-w-[1400px] w-full mx-auto">
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 xl:px-10 w-full">
           {currentView === 'dashboard' && (
             <DashboardView
               doctors={doctors}
