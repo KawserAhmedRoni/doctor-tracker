@@ -21,6 +21,7 @@ import { SpecializationLabel } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Pagination } from '../ui/Pagination';
 import { CustomSelect } from '../ui/CustomSelect';
+import { ActionMenu } from '../ui/ActionMenu';
 import { EmptyState, ErrorState, TableSkeleton } from '../ui/StateViews';
 
 interface DoctorsListViewProps {
@@ -335,9 +336,9 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-                  {paginatedDoctors.map((doc) => {
+                  {paginatedDoctors.map((doc, index) => {
                     const count = patientCountMap.get(doc.id) ?? 0;
-                    const menuOpen = openMenuId === doc.id;
+                    const isLastRow = index > 2 && index >= paginatedDoctors.length - 2;
                     return (
                       <tr
                         key={doc.id}
@@ -349,7 +350,7 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
                             onClick={() => onSelectDoctor(doc.id)}
                             className="flex items-center gap-3 text-left group cursor-pointer"
                           >
-                            <Avatar name={doc.name} src={doc.avatarUrl} size="sm" />
+                            <Avatar name={doc.name} size="sm" />
                             <div>
                               <p className="font-semibold text-slate-900 group-hover:text-teal-700 dark:text-slate-100 dark:group-hover:text-teal-400 transition-colors">
                                 {doc.name}
@@ -381,63 +382,37 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
                           {formatDisplayDate(doc.createdAt)}
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <div className="relative inline-flex items-center gap-1">
+                          <div className="inline-flex items-center gap-1">
                             <button
                               type="button"
                               onClick={() => onSelectDoctor(doc.id)}
                               title="View doctor details"
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100 cursor-pointer"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100 cursor-pointer transition-colors"
                             >
                               <Eye className="h-4 w-4" />
                             </button>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setOpenMenuId(menuOpen ? null : doc.id)
-                              }
-                              aria-label={`Actions for ${doc.name}`}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100 cursor-pointer"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </button>
-
-                            {menuOpen && (
-                              <div className="absolute right-0 top-9 z-20 w-44 rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900 text-left">
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setOpenMenuId(null);
-                                    onSelectDoctor(doc.id);
-                                  }}
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800 cursor-pointer"
-                                >
-                                  <Eye className="h-3.5 w-3.5 text-slate-400" />
-                                  <span>View Details</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setOpenMenuId(null);
-                                    onEditDoctor(doc);
-                                  }}
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800 cursor-pointer"
-                                >
-                                  <Edit3 className="h-3.5 w-3.5 text-slate-400" />
-                                  <span>Edit Doctor</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setOpenMenuId(null);
-                                    onDeleteDoctor(doc);
-                                  }}
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 cursor-pointer"
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                  <span>Delete Doctor</span>
-                                </button>
-                              </div>
-                            )}
+                            <ActionMenu
+                              isLastRow={isLastRow}
+                              ariaLabel={`Actions for ${doc.name}`}
+                              items={[
+                                {
+                                  label: 'View Details',
+                                  icon: <Eye className="h-3.5 w-3.5 text-slate-400" />,
+                                  onClick: () => onSelectDoctor(doc.id),
+                                },
+                                {
+                                  label: 'Edit Doctor',
+                                  icon: <Edit3 className="h-3.5 w-3.5 text-slate-400" />,
+                                  onClick: () => onEditDoctor(doc),
+                                },
+                                {
+                                  label: 'Delete Doctor',
+                                  icon: <Trash2 className="h-3.5 w-3.5" />,
+                                  variant: 'danger',
+                                  onClick: () => onDeleteDoctor(doc),
+                                },
+                              ]}
+                            />
                           </div>
                         </td>
                       </tr>
