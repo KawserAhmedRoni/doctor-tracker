@@ -5,10 +5,18 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { isValidEmail } from '../../utils/formatters';
 
+interface AuthenticatedUserData {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatarUrl?: string;
+}
+
 interface LoginPageProps {
   darkMode: boolean;
   onToggleDarkMode: () => void;
-  onSuccessLogin: (email: string) => void;
+  onSuccessLogin: (user: AuthenticatedUserData) => void;
   onNavigateForgotPassword: () => void;
 }
 
@@ -18,21 +26,21 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   onSuccessLogin,
   onNavigateForgotPassword,
 }) => {
-  const [email, setEmail] = useState('admin@doctortracker.health');
-  const [password, setPassword] = useState('ClinicalAdmin#2026');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError(null);
     const nextErrors: { email?: string; password?: string } = {};
 
     if (!email.trim()) {
-      nextErrors.email = 'Administrator email is required.';
+      nextErrors.email = 'Email address is required.';
     } else if (!isValidEmail(email)) {
       nextErrors.email = 'Enter a valid email address.';
     }
@@ -47,28 +55,30 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     if (Object.keys(nextErrors).length > 0) return;
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      // Simulate invalid credentials when user enters "wrong" in password or wrong@
-      if (password === 'wrong' || email.toLowerCase().includes('invalid')) {
-        setAuthError(
-          'Invalid email or password. Please verify your administrator credentials and try again.'
-        );
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setAuthError(data.error || 'Invalid email or password.');
+        setLoading(false);
         return;
       }
+
       setSuccess(true);
       setTimeout(() => {
-        onSuccessLogin(email);
-      }, 650);
-    }, 650);
-  };
-
-  const simulateInvalidCredentials = () => {
-    setErrors({});
-    setSuccess(false);
-    setAuthError(
-      'Invalid email or password. Please verify your administrator credentials and try again.'
-    );
+        onSuccessLogin(data.user);
+      }, 500);
+    } catch (err: any) {
+      setAuthError('Connection error. Please check your network and try again.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,14 +105,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             className="flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800 dark:border-emerald-800/70 dark:bg-emerald-950/50 dark:text-emerald-300"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Credentials verified. Redirecting to administrator workspace...</span>
+            <span>Credentials verified. Redirecting to workspace...</span>
           </div>
         )}
 
         <Input
           label="Email Address"
           type="email"
-          placeholder="admin@doctortracker.health"
+          placeholder="e.g. admin@doctortracker.health"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={errors.email}
@@ -152,28 +162,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </Button>
-
-        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
-          <button
-            type="button"
-            onClick={() => {
-              setEmail('admin@doctortracker.health');
-              setPassword('ClinicalAdmin#2026');
-              setErrors({});
-              setAuthError(null);
-            }}
-            className="font-medium text-slate-700 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400 cursor-pointer"
-          >
-            Fill Demo Credentials
-          </button>
-          <button
-            type="button"
-            onClick={simulateInvalidCredentials}
-            className="font-medium text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 cursor-pointer"
-          >
-            Preview Invalid Error
-          </button>
-        </div>
       </form>
     </AuthLayout>
   );

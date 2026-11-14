@@ -18,7 +18,7 @@ interface SidebarProps {
   onToggleCollapse: () => void;
   mobileOpen: boolean;
   onCloseMobile: () => void;
-  onNavigate: (view: 'dashboard' | 'doctors' | 'patients') => void;
+  onNavigate: (view: 'dashboard' | 'doctors' | 'patients' | 'profile') => void;
   onLogout: () => void;
   user: AdminUser;
 }
@@ -169,10 +169,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* User Profile & Logout Footer */}
         <div className="border-t border-slate-200 dark:border-slate-800 p-3 space-y-2">
-          <div
-            className={`flex items-center gap-2.5 rounded-lg p-2 ${
-              isCollapsed ? 'justify-center' : ''
-            }`}
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('profile');
+              if (isMobile) onCloseMobile();
+            }}
+            title={isCollapsed ? `${user.name} (View Profile)` : undefined}
+            className={`w-full flex items-center gap-2.5 rounded-lg p-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer ${
+              currentView === 'profile' ? 'bg-slate-100 dark:bg-slate-800' : ''
+            } ${isCollapsed ? 'justify-center' : ''}`}
           >
             <Avatar name={user.name} src={user.avatarUrl} size="sm" />
             {!isCollapsed && (
@@ -182,11 +188,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 truncate flex items-center gap-1">
                   <UserRound className="h-3 w-3 shrink-0" aria-hidden="true" />
-                  <span className="truncate">Admin</span>
+                  <span className="truncate capitalize">{user.role || 'Admin'}</span>
                 </p>
               </div>
             )}
-          </div>
+          </button>
 
           <button
             type="button"

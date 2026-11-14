@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import {
+  AdminUser,
   AppView,
   Doctor,
   NotificationItem,
@@ -19,6 +20,7 @@ import { Sidebar } from '@/src/components/layout/Sidebar';
 import { PatientDetailsView } from '@/src/components/patients/PatientDetailsView';
 import { PatientFormModal } from '@/src/components/patients/PatientFormModal';
 import { PatientsListView } from '@/src/components/patients/PatientsListView';
+import { ProfileView } from '@/src/components/profile/ProfileView';
 import { ConfirmDialog } from '@/src/components/ui/ConfirmDialog';
 import { ToastContainer } from '@/src/components/ui/Toast';
 import { BottomNav } from '@/src/components/ui/BottomNav';
@@ -30,7 +32,27 @@ import { NotFoundPage, UnauthorizedPage } from '@/src/components/auth/ErrorPages
 export default function MainPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [currentView, setCurrentView] = useState<AppView>('dashboard');
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AdminUser>(ADMIN_USER);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // Check saved authentication session on initial load
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('doctor_tracker_auth_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.email) {
+          setCurrentUser(parsed);
+          setIsAuthenticated(true);
+        }
+      }
+    } catch (e) {
+      // ignore
+    } finally {
+      setAuthChecked(true);
+    }
+  }, []);
 
   // Doctors & Patients state synced with Real MongoDB Backend
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -307,6 +329,8 @@ export default function MainPage() {
 
   const breadcrumbs = useMemo(() => {
     if (currentView === 'dashboard') return [{ label: 'Dashboard' }];
+    if (currentView === 'profile')
+      return [{ label: 'Dashboard', onClick: () => setCurrentView('dashboard') }, { label: 'Profile & Users' }];
     if (currentView === 'doctors')
       return [{ label: 'Dashboard', onClick: () => setCurrentView('dashboard') }, { label: 'Doctors' }];
     if (currentView === 'doctor-details')
@@ -326,17 +350,52 @@ export default function MainPage() {
     return [{ label: 'Doctor Tracker' }];
   }, [currentView, selectedDoctor, selectedPatient]);
 
+  const handleLoginSuccess = (userData: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    avatarUrl?: string;
+  }) => {
+    const userObj: AdminUser = {
+      name: userData.name || 'Administrator',
+      email: userData.email,
+      role: userData.role || 'admin',
+      avatarUrl: userData.avatarUrl || ADMIN_USER.avatarUrl,
+    };
+    setCurrentUser(userObj);
+    setIsAuthenticated(true);
+    try {
+      localStorage.setItem('doctor_tracker_auth_user', JSON.stringify(userObj));
+    } catch (e) {}
+    setCurrentView('dashboard');
+    addToast('success', 'Signed In', `Welcome back, ${userObj.name}!`);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setCurrentView('login');
+    try {
+      localStorage.removeItem('doctor_tracker_auth_user');
+    } catch (e) {}
+    addToast('info', 'Signed Out', 'Administrator session ended.');
+  };
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#090E1A]">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent" />
+      </div>
+    );
+  }
+
   if (!isAuthenticated || currentView === 'login') {
     return (
       <>
         <LoginPage
           darkMode={darkMode}
           onToggleDarkMode={() => setDarkMode((prev) => !prev)}
-          onSuccessLogin={() => {
-            setIsAuthenticated(true);
-            setCurrentView('dashboard');
-            addToast('success', 'Signed In', 'Welcome back to Doctor Tracker.');
-          }}
+          onSuccessLogin={handleLoginSuccess}
           onNavigateForgotPassword={() => setCurrentView('forgot-password')}
         />
         <ToastContainer toasts={toasts} onDismiss={dismissToast} />
@@ -374,12 +433,8 @@ export default function MainPage() {
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
         onNavigate={(view) => setCurrentView(view)}
-        onLogout={() => {
-          setIsAuthenticated(false);
-          setCurrentView('login');
-          addToast('info', 'Signed Out', 'Administrator session ended.');
-        }}
-        user={ADMIN_USER}
+        onLogout={handleLogout}
+        user={currentUser}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -403,11 +458,9 @@ export default function MainPage() {
           }}
           darkMode={darkMode}
           onToggleDarkMode={() => setDarkMode((prev) => !prev)}
-          user={ADMIN_USER}
-          onLogout={() => {
-            setIsAuthenticated(false);
-            setCurrentView('login');
-          }}
+          user={currentUser}
+          onLogout={handleLogout}
+          onOpenProfile={() => setCurrentView('profile')}
           onPreviewSystemScreen={(view) => setCurrentView(view)}
         />
 
@@ -472,6 +525,13 @@ export default function MainPage() {
               onEditPatient={handleOpenEditPatient}
               onDeletePatient={(pat) => setConfirmDeletePatient(pat)}
               onSelectDoctor={navigateToDoctor}
+            />
+          )}
+
+          {currentView === 'profile' && (
+            <ProfileView
+              currentUser={currentUser}
+              onShowToast={(variant, title, desc) => addToast(variant, title, desc)}
             />
           )}
         </main>

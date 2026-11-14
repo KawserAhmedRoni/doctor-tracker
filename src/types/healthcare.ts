@@ -51,6 +51,7 @@ export type AppView =
   | 'doctor-details'
   | 'patients'
   | 'patient-details'
+  | 'profile'
   | 'login'
   | 'forgot-password'
   | 'reset-password'

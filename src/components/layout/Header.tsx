@@ -44,6 +44,7 @@ interface HeaderProps {
   onToggleDarkMode: () => void;
   user: AdminUser;
   onLogout: () => void;
+  onOpenProfile?: () => void;
   onPreviewSystemScreen?: (view: AppView) => void;
 }
 
@@ -61,6 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleDarkMode,
   user,
   onLogout,
+  onOpenProfile,
   onPreviewSystemScreen,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -374,6 +376,20 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
 
               <div className="py-1">
+                {onOpenProfile && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setProfileOpen(false);
+                      onOpenProfile();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800 cursor-pointer border-b border-slate-100 dark:border-slate-800"
+                  >
+                    <UserRound className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+                    <span>Profile & Users</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => {
