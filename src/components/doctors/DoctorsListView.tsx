@@ -20,6 +20,7 @@ import { Avatar } from '../ui/Avatar';
 import { SpecializationLabel } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Pagination } from '../ui/Pagination';
+import { CustomSelect } from '../ui/CustomSelect';
 import { EmptyState, ErrorState, TableSkeleton } from '../ui/StateViews';
 
 interface DoctorsListViewProps {
@@ -182,42 +183,32 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
 
           {/* Specialization Filter */}
           <div className="lg:col-span-2">
-            <select
+            <CustomSelect
               value={specializationFilter}
-              onChange={(e) => {
-                setSpecializationFilter(e.target.value);
+              onChange={(val) => {
+                setSpecializationFilter(val);
                 setPage(1);
               }}
-              aria-label="Filter by specialization"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="all">All Specializations</option>
-              {SPECIALIZATIONS.map((spec) => (
-                <option key={spec} value={spec}>
-                  {spec}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: 'all', label: 'All Specializations' },
+                ...SPECIALIZATIONS.map((spec) => ({ value: spec, label: spec })),
+              ]}
+            />
           </div>
 
           {/* Hospital Filter */}
           <div className="lg:col-span-2">
-            <select
+            <CustomSelect
               value={hospitalFilter}
-              onChange={(e) => {
-                setHospitalFilter(e.target.value);
+              onChange={(val) => {
+                setHospitalFilter(val);
                 setPage(1);
               }}
-              aria-label="Filter by hospital"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="all">All Hospitals</option>
-              {HOSPITALS.map((hosp) => (
-                <option key={hosp} value={hosp}>
-                  {hosp}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: 'all', label: 'All Hospitals' },
+                ...HOSPITALS.map((hosp) => ({ value: hosp, label: hosp })),
+              ]}
+            />
           </div>
 
           {/* Date-wise Filter */}
@@ -235,24 +226,23 @@ export const DoctorsListView: React.FC<DoctorsListViewProps> = ({
               }}
               aria-label="Filter doctors added from date"
               title="Joined on or after date"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
             />
           </div>
 
           {/* Sort Control */}
           <div className="lg:col-span-2">
-            <select
+            <CustomSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              aria-label="Sort doctors"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="patients-desc">Sort: Most Patients</option>
-              <option value="name-asc">Sort: Name (A–Z)</option>
-              <option value="name-desc">Sort: Name (Z–A)</option>
-              <option value="newest">Sort: Newest Added</option>
-              <option value="oldest">Sort: Oldest Added</option>
-            </select>
+              onChange={(val) => setSortBy(val as SortOption)}
+              options={[
+                { value: 'patients-desc', label: 'Most Patients' },
+                { value: 'name-asc', label: 'Name (A–Z)' },
+                { value: 'name-desc', label: 'Name (Z–A)' },
+                { value: 'newest', label: 'Newest First' },
+                { value: 'oldest', label: 'Oldest First' },
+              ]}
+            />
           </div>
         </div>
 

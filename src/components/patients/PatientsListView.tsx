@@ -19,6 +19,7 @@ import { Avatar } from '../ui/Avatar';
 import { ConditionLabel } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Pagination } from '../ui/Pagination';
+import { CustomSelect } from '../ui/CustomSelect';
 import { EmptyState, ErrorState, TableSkeleton } from '../ui/StateViews';
 
 interface PatientsListViewProps {
@@ -186,43 +187,33 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
 
           {/* Condition Filter */}
           <div className="lg:col-span-2">
-            <select
+            <CustomSelect
               value={conditionFilter}
-              onChange={(e) => {
-                setConditionFilter(e.target.value);
+              onChange={(val) => {
+                setConditionFilter(val);
                 setPage(1);
               }}
-              aria-label="Filter by patient condition"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="all">All Conditions</option>
-              {PATIENT_CONDITIONS.map((cond) => (
-                <option key={cond} value={cond}>
-                  {cond}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: 'all', label: 'All Conditions' },
+                ...PATIENT_CONDITIONS.map((cond) => ({ value: cond, label: cond })),
+              ]}
+            />
           </div>
 
           {/* Assigned Doctor Filter */}
           <div className="lg:col-span-3">
-            <select
+            <CustomSelect
               value={doctorFilter}
-              onChange={(e) => {
-                setDoctorFilter(e.target.value);
+              onChange={(val) => {
+                setDoctorFilter(val);
                 setPage(1);
               }}
-              aria-label="Filter by assigned doctor"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="all">All Assigned Doctors</option>
-              <option value="unassigned">Unassigned Patients</option>
-              {doctors.map((doc) => (
-                <option key={doc.id} value={doc.id}>
-                  {doc.name}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: 'all', label: 'All Assigned Doctors' },
+                { value: 'unassigned', label: 'Unassigned Patients' },
+                ...doctors.map((doc) => ({ value: doc.id, label: doc.name })),
+              ]}
+            />
           </div>
 
           {/* Date-wise Range */}
@@ -237,7 +228,7 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
                 }}
                 aria-label="Registered from date"
                 title="Registered from date"
-                className="h-10 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
               />
             </div>
             <div className="relative">
@@ -250,25 +241,24 @@ export const PatientsListView: React.FC<PatientsListViewProps> = ({
                 }}
                 aria-label="Registered to date"
                 title="Registered to date"
-                className="h-10 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
               />
             </div>
           </div>
 
           {/* Sort */}
           <div className="lg:col-span-2">
-            <select
+            <CustomSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as PatientSort)}
-              aria-label="Sort patients"
-              className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="newest">Sort: Newest Registered</option>
-              <option value="oldest">Sort: Oldest Registered</option>
-              <option value="name-asc">Sort: Name (A–Z)</option>
-              <option value="name-desc">Sort: Name (Z–A)</option>
-              <option value="condition">Sort: Condition</option>
-            </select>
+              onChange={(val) => setSortBy(val as PatientSort)}
+              options={[
+                { value: 'newest', label: 'Newest First' },
+                { value: 'oldest', label: 'Oldest First' },
+                { value: 'name-asc', label: 'Name (A–Z)' },
+                { value: 'name-desc', label: 'Name (Z–A)' },
+                { value: 'condition', label: 'By Condition' },
+              ]}
+            />
           </div>
         </div>
 

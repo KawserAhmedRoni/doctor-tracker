@@ -28,6 +28,7 @@ import { formatDisplayDate, isWithinDays } from '../../utils/formatters';
 import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
 import { ConditionLabel, SpecializationLabel } from '../ui/Badge';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface DashboardViewProps {
   doctors: Doctor[];
@@ -254,25 +255,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 h-9 dark:border-slate-700 dark:bg-slate-900">
-            <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" aria-hidden="true" />
-            <select
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
+          <div className="w-full sm:w-40">
+            <CustomSelect
+              size="sm"
               value={dateRange}
-              onChange={(e) => setDateRange(e.target.value as DateRangePreset)}
-              aria-label="Dashboard date range"
-              className="bg-transparent text-xs font-medium text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
-            >
-              {RANGE_OPTIONS.map((opt) => (
-                <option
-                  key={opt.id}
-                  value={opt.id}
-                  className="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"
-                >
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setDateRange(val as DateRangePreset)}
+              icon={<Calendar className="h-3.5 w-3.5" />}
+              options={RANGE_OPTIONS.map((opt) => ({ value: opt.id, label: opt.label }))}
+            />
           </div>
 
           <Button
@@ -281,6 +272,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             onClick={handleRefresh}
             loading={refreshing}
             leftIcon={<RefreshCw className="h-3.5 w-3.5" />}
+            className="w-full sm:w-auto justify-center rounded-xl"
           >
             Refresh
           </Button>
@@ -290,6 +282,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             size="sm"
             onClick={onAddDoctor}
             leftIcon={<Stethoscope className="h-3.5 w-3.5" />}
+            className="w-full sm:w-auto justify-center rounded-xl"
           >
             Add Doctor
           </Button>
@@ -299,6 +292,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             size="sm"
             onClick={onAddPatient}
             leftIcon={<UserPlus className="h-3.5 w-3.5" />}
+            className="w-full sm:w-auto justify-center rounded-xl shadow-xs"
           >
             Add Patient
           </Button>

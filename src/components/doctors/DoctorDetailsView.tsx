@@ -20,6 +20,7 @@ import { formatDisplayDate, isWithinDays } from '../../utils/formatters';
 import { Avatar } from '../ui/Avatar';
 import { ConditionLabel, SpecializationLabel } from '../ui/Badge';
 import { Button } from '../ui/Button';
+import { CustomSelect } from '../ui/CustomSelect';
 import { EmptyState, ErrorState, TableSkeleton } from '../ui/StateViews';
 
 interface DoctorDetailsViewProps {
@@ -232,19 +233,17 @@ export const DoctorDetailsView: React.FC<DoctorDetailsViewProps> = ({
               )}
             </div>
 
-            <select
-              value={conditionFilter}
-              onChange={(e) => setConditionFilter(e.target.value)}
-              aria-label="Filter by patient condition"
-              className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            >
-              <option value="all">All Conditions</option>
-              {PATIENT_CONDITIONS.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+            <div className="w-36 sm:w-44">
+              <CustomSelect
+                size="sm"
+                value={conditionFilter}
+                onChange={(val) => setConditionFilter(val)}
+                options={[
+                  { value: 'all', label: 'All Conditions' },
+                  ...PATIENT_CONDITIONS.map((c) => ({ value: c, label: c })),
+                ]}
+              />
+            </div>
 
             <Button
               size="sm"

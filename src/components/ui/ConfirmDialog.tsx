@@ -30,11 +30,11 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     <Modal open={open} onClose={onClose} title={title} size="sm">
       <div className="space-y-4">
         <div className="flex items-start gap-3.5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-rose-50 text-rose-600 border border-rose-200 dark:bg-rose-950/50 dark:text-rose-400 dark:border-rose-800/60">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 border border-rose-200/80 dark:bg-rose-950/60 dark:text-rose-400 dark:border-rose-900/60 shadow-xs">
             <AlertTriangle className="h-5 w-5" aria-hidden="true" />
           </div>
-          <div className="space-y-1.5">
-            <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+          <div className="space-y-1 pt-0.5">
+            <p className="text-sm font-medium text-slate-800 dark:text-slate-100 leading-relaxed">
               {description}
             </p>
             {detailNote && (
@@ -45,11 +45,17 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <Button variant="outline" onClick={onClose} disabled={loading}>
+        <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+          <Button variant="outline" size="sm" onClick={onClose} disabled={loading} className="rounded-xl">
             {cancelLabel}
           </Button>
-          <Button variant="danger" onClick={onConfirm} loading={loading}>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onConfirm}
+            loading={loading}
+            className="rounded-xl shadow-xs"
+          >
             {confirmLabel}
           </Button>
         </div>
