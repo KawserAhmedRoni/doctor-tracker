@@ -350,18 +350,11 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={() => setProfileOpen((prev) => !prev)}
             aria-expanded={profileOpen}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white pl-1.5 pr-2.5 py-1 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white p-1 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 cursor-pointer"
+            title={`${user.name} (${user.email})`}
           >
             <Avatar name={user.name} src={user.avatarUrl} size="xs" />
-            <div className="hidden sm:block text-left leading-tight">
-              <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
-                {user.name}
-              </p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                Admin
-              </p>
-            </div>
-            <ChevronDown className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+            <ChevronDown className="h-3 w-3 text-slate-400 shrink-0 mr-0.5" />
           </button>
 
           {profileOpen && (
