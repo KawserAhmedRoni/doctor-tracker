@@ -286,6 +286,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </Button>
 
           <Button
+            variant="outline"
+            size="sm"
+            onClick={onAddDoctor}
+            leftIcon={<Stethoscope className="h-3.5 w-3.5" />}
+          >
+            Add Doctor
+          </Button>
+
+          <Button
             variant="primary"
             size="sm"
             onClick={onAddPatient}
