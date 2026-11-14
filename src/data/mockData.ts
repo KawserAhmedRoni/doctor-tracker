@@ -11,7 +11,6 @@ export const ADMIN_USER: AdminUser = {
   name: 'Morgan Reed',
   email: 'admin@doctortracker.health',
   role: 'Healthcare Administrator',
-  avatarUrl: '/src/assets/images/avatar_admin_director_1794584911010.jpg',
 };
 
 export const SPECIALIZATIONS: Specialization[] = [
@@ -50,7 +49,6 @@ export const INITIAL_DOCTORS: Doctor[] = [
     hospital: 'Northside Heart Institute',
     phone: '(415) 890-2310',
     email: 'm.sterling@northsideheart.org',
-    avatarUrl: '/src/assets/images/avatar_doctor_cardiology_1794584911407.jpg',
     createdAt: '2026-06-14',
   },
   {
@@ -60,7 +58,6 @@ export const INITIAL_DOCTORS: Doctor[] = [
     hospital: 'Mercy General Hospital',
     phone: '(415) 890-4412',
     email: 'e.navarro@mercygeneral.org',
-    avatarUrl: '/src/assets/images/avatar_doctor_neurology_1794584911612.jpg',
     createdAt: '2026-07-02',
   },
   {
@@ -70,7 +67,6 @@ export const INITIAL_DOCTORS: Doctor[] = [
     hospital: 'St. Jude Medical Center',
     phone: '(415) 890-7745',
     email: 'a.thorne@stjudemedical.org',
-    avatarUrl: '/src/assets/images/avatar_doctor_pediatrics_1794584912343.jpg',
     createdAt: '2026-07-19',
   },
   {
