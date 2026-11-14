@@ -1,5 +1,53 @@
-node_modules
-.next
-.env.local
-.DS_Store
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/cache
+
+# Testing & Coverage
+/coverage
+
+# Next.js Build Outputs
+/.next/
+/out/
+/build
+/dist
+
+# Environment Configuration
+.env
+.env*.local
+!.env.example
+
+# Debug and System Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 *.log
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and Editor Directories
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript Cache
+*.tsbuildinfo
+next-env.d.ts.bak
