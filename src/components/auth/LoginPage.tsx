@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { AlertCircle, CheckCircle2, Lock, Mail } from 'lucide-react';
-import { AuthLayout } from './AuthLayout';
-import { Button } from '../ui/Button';
-import { Input } from '../ui/Input';
-import { isValidEmail } from '../../utils/formatters';
+import { AlertCircle, CheckCircle2, Lock, Mail } from "lucide-react";
+import React, { useState } from "react";
+import { isValidEmail } from "../../utils/formatters";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
+import { AuthLayout } from "./AuthLayout";
 
 interface AuthenticatedUserData {
   id: string;
@@ -26,10 +26,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   onSuccessLogin,
   onNavigateForgotPassword,
 }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {},
+  );
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -40,15 +42,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     const nextErrors: { email?: string; password?: string } = {};
 
     if (!email.trim()) {
-      nextErrors.email = 'Email address is required.';
+      nextErrors.email = "Email address is required.";
     } else if (!isValidEmail(email)) {
-      nextErrors.email = 'Enter a valid email address.';
+      nextErrors.email = "Enter a valid email address.";
     }
 
     if (!password) {
-      nextErrors.password = 'Password is required.';
+      nextErrors.password = "Password is required.";
     } else if (password.length < 6) {
-      nextErrors.password = 'Password must be at least 6 characters.';
+      nextErrors.password = "Password must be at least 6 characters.";
     }
 
     setErrors(nextErrors);
@@ -57,16 +59,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setAuthError(data.error || 'Invalid email or password.');
+        setAuthError(data.error || "Invalid email or password.");
         setLoading(false);
         return;
       }
@@ -76,7 +78,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         onSuccessLogin(data.user);
       }, 500);
     } catch (err: any) {
-      setAuthError('Connection error. Please check your network and try again.');
+      setAuthError(
+        "Connection error. Please check your network and try again.",
+      );
       setLoading(false);
     }
   };
@@ -161,7 +165,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           loading={loading}
           className="w-full"
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
     </AuthLayout>
