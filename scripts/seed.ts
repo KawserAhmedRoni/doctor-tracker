@@ -19,7 +19,7 @@ async function seed() {
   console.log('Creating Admin User...');
   const hashedPassword = await bcrypt.hash('admin123', 10);
   await User.create({
-    name: 'Morgan Reed (Admin)',
+    name: 'Morgan Reed',
     email: 'admin@doctortracker.health',
     password: hashedPassword,
     role: 'admin',
